@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open Email</title>
+</head>
+<body>
+  <p>Opening your email app…</p>
+  <p>If nothing happens, tap the button below.</p>
+  <p><button id="btn" style="font-size:18px;padding:12px 16px;">Open Email</button></p>
+
+  <script>
+    const to = [
+      "joannis.maniatis@europarl.europa.eu",
+      "lucia.annunziata@europarl.europa.eu",
+      "nacho.sanchezamor@europarl.europa.eu",
+      "francisco.assis@europarl.europa.eu",
+      "evin.incir@europarl.europa.eu",
+      "daniel.attard@europarl.europa.eu",
+      "alessandra.moretti@europarl.europa.eu",
+      "estelle.ceulemans@europarl.europa.eu",
+      "elio.dirupo@europarl.europa.eu"
+    ].join(",");
+
+    const subject = "Iran: Words are not enough — we urge S&D to take a firmer stance";
+
+    const body = `Dear Members of the S&D Group,
+
+As Iranian citizens and members of the Iranian diaspora, we have carefully reviewed the motions submitted on Iran. While we acknowledge your concern, we are deeply disappointed by the cautious and restrained tone adopted by the S&D Group.
+
+The reality on the ground in Iran demands far more than soft language.
+
+The Iranian regime is:
+— killing peaceful protesters
+— carrying out mass executions
+— systematically repressing women, minorities, journalists and human rights defenders
+— using hostage diplomacy and transnational repression
+
+Other political groups in Parliament have clearly and unequivocally:
+— named the regime as violent and illegitimate
+— called for a full IRGC terrorist designation
+— demanded an immediate halt to executions
+— supported a democratic transition led by the Iranian people
+
+We urge the S&D Group to rise to this moral responsibility and adopt a firmer position that reflects the scale and brutality of the crimes being committed.
+
+Silence, hesitation, or diplomatic caution only embolden a regime built on terror and fear.
+
+The people of Iran are watching. History will remember who stood firmly for human rights and who chose restraint in the face of mass repression.
+
+We call on S&D to strengthen its position before the vote and stand unequivocally with the people of Iran.
+
+Sincerely,
+[Your Name]`;
+
+    function mailtoLink() {
+      return "mailto:" + to
+        + "?subject=" + encodeURIComponent(subject)
+        + "&body=" + encodeURIComponent(body);
+    }
+
+    function go() {
+      window.location.href = mailtoLink();
+    }
+
+    // Auto-redirect (may be blocked in some in-app browsers; button is fallback)
+    setTimeout(go, 200);
+
+    document.getElementById("btn").addEventListener("click", go);
+  </script>
+</body>
+</html>
