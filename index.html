@@ -5,23 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Open Email</title>
 </head>
-<body>
-  <p>Opening your email app…</p>
-  <p>If nothing happens, tap the button below.</p>
-  <p><button id="btn" style="font-size:18px;padding:12px 16px;">Open Email</button></p>
+
+<body style="font-family: Arial, sans-serif; padding: 20px;">
+  <h3>Open Email</h3>
+  <p>Tap the button below to open your email app with the message ready.</p>
+
+  <button id="btn" style="font-size:18px;padding:12px 16px;cursor:pointer;">
+    Open Email
+  </button>
 
   <script>
-    const to = [
-      "ioannis.maniatis@europarl.europa.eu;";
-      "lucia.annunziata@europarl.europa.eu;";
-      "nacho.sanchezamor@europarl.europa.eu;";
-      "francisco.assis@europarl.europa.eu;";
-      "evin.incir@europarl.europa.eu;";
-      "daniel.attard@europarl.europa.eu;";
-      "alessandra.moretti@europarl.europa.eu;";
-      "estelle.ceulemans@europarl.europa.eu;";
-      "elio.dirupo@europarl.europa.eu",
-    ].join(",");
+    // ✅ Correct email list
+    const emails = [
+      "ioannis.maniatis@europarl.europa.eu",
+      "lucia.annunziata@europarl.europa.eu",
+      "nacho.sanchezamor@europarl.europa.eu",
+      "francisco.assis@europarl.europa.eu",
+      "evin.incir@europarl.europa.eu",
+      "daniel.attard@europarl.europa.eu",
+      "alessandra.moretti@europarl.europa.eu",
+      "estelle.ceulemans@europarl.europa.eu",
+      "elio.dirupo@europarl.europa.eu"
+    ];
+
+    // ✅ Use semicolon ; instead of comma , (fixes iPhone errors)
+    const to = emails.join(";");
 
     const subject = "Iran: Words are not enough — we urge S&D to take a firmer stance";
 
@@ -54,20 +62,19 @@ We call on S&D to strengthen its position before the vote and stand unequivocall
 Sincerely,
 [Your Name]`;
 
-    function mailtoLink() {
-      return "mailto:" + to
-        + "?subject=" + encodeURIComponent(subject)
-        + "&body=" + encodeURIComponent(body);
+    function openEmail() {
+      const link =
+        "mailto:" + to +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+
+      window.location.href = link;
     }
 
-    function go() {
-      window.location.href = mailtoLink();
-    }
+    document.getElementById("btn").addEventListener("click", openEmail);
 
-    // Auto-redirect (may be blocked in some in-app browsers; button is fallback)
-    setTimeout(go, 200);
-
-    document.getElementById("btn").addEventListener("click", go);
+    // Auto-try (Instagram may block auto redirects, button is fallback)
+    setTimeout(openEmail, 300);
   </script>
 </body>
 </html>
