@@ -3,19 +3,66 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Open Email</title>
+  <title>S&D Email Action</title>
+  <style>
+    body {
+      font-family: -apple-system, sans-serif;
+      line-height: 1.5;
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #f9f9f9;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h3 { color: #d32f2f; margin-top: 0; }
+    p { font-size: 14px; color: #555; }
+    .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    button {
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-secondary { background: #e9ecef; color: #333; font-size: 14px; }
+    button:active { transform: scale(0.98); }
+    .status {
+      font-size: 12px;
+      color: #28a745;
+      text-align: center;
+      margin-top: 5px;
+      display: none;
+    }
+  </style>
 </head>
 
-<body style="font-family: Arial, sans-serif; padding: 20px;">
-  <h3>Open Email</h3>
-  <p>Tap the button below to open your email app with the message ready.</p>
+<body>
+  <div class="card">
+    <h3>Take Action</h3>
+    <p>اگر دکمه اول به درستی تمام ایمیل‌ها را وارد نکرد، از دکمه‌های کپی استفاده کنید.</p>
 
-  <button id="btn" style="font-size:18px;padding:12px 16px;cursor:pointer;">
-    Open Email
-  </button>
+    <div class="btn-group">
+      <button class="btn-primary" onclick="openEmail()">۱. ارسال ایمیل (خودکار)</button>
+      
+      <hr style="width:100%; border:0; border-top:1px solid #eee; margin:10px 0;">
+
+      <button class="btn-secondary" onclick="copyToClipboard(emailsList, 'status-emails')">کپی کردن لیست ایمیل‌ها</button>
+      <div id="status-emails" class="status">کپی شد! حالا در قسمت To پیست کنید.</div>
+
+      <button class="btn-secondary" onclick="copyToClipboard(emailBody, 'status-body')">کپی کردن متن نامه</button>
+      <div id="status-body" class="status">متن کپی شد!</div>
+    </div>
+  </div>
 
   <script>
-    // ✅ Correct email list
     const emails = [
       "ioannis.maniatis@europarl.europa.eu",
       "lucia.annunziata@europarl.europa.eu",
@@ -28,12 +75,9 @@
       "elio.dirupo@europarl.europa.eu"
     ];
 
-    // ✅ Use semicolon ; instead of comma , (fixes iPhone errors)
-    const to = emails.join(";");
-
     const subject = "Iran: Words are not enough — we urge S&D to take a firmer stance";
-
-    const body = `Dear Members of the S&D Group,
+    
+    const emailBody = `Dear Members of the S&D Group,
 
 As Iranian citizens and members of the Iranian diaspora, we have carefully reviewed the motions submitted on Iran. While we acknowledge your concern, we are deeply disappointed by the cautious and restrained tone adopted by the S&D Group.
 
@@ -62,19 +106,29 @@ We call on S&D to strengthen its position before the vote and stand unequivocall
 Sincerely,
 [Your Name]`;
 
-    function openEmail() {
-      const link =
-        "mailto:" + to +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
+   
+    const emailsList = emails.join(", ");
 
-      window.location.href = link;
+    function openEmail() {
+      
+      const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+      const separator = isApple ? ";" : ",";
+      const to = emails.join(separator);
+
+      const mailtoUrl = "mailto:" + to +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(emailBody);
+
+      window.location.href = mailtoUrl;
     }
 
-    document.getElementById("btn").addEventListener("click", openEmail);
-
-    // Auto-try (Instagram may block auto redirects, button is fallback)
-    setTimeout(openEmail, 300);
+    function copyToClipboard(text, statusId) {
+      navigator.clipboard.writeText(text).then(() => {
+        const status = document.getElementById(statusId);
+        status.style.display = "block";
+        setTimeout(() => { status.style.display = "none"; }, 3000);
+      });
+    }
   </script>
 </body>
 </html>
