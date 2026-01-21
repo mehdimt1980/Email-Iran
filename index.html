@@ -1,134 +1,90 @@
 <!doctype html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>S&D Email Action</title>
+  <title>ارسال ایمیل به S&D</title>
   <style>
-    body {
-      font-family: -apple-system, sans-serif;
-      line-height: 1.5;
-      padding: 20px;
-      max-width: 500px;
-      margin: 0 auto;
-      background-color: #f9f9f9;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    h3 { color: #d32f2f; margin-top: 0; }
-    p { font-size: 14px; color: #555; }
-    .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-    button {
-      padding: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .btn-primary { background: #007bff; color: white; }
-    .btn-secondary { background: #e9ecef; color: #333; font-size: 14px; }
-    button:active { transform: scale(0.98); }
-    .status {
-      font-size: 12px;
-      color: #28a745;
-      text-align: center;
-      margin-top: 5px;
-      display: none;
-    }
+    body { font-family: Tahoma, Arial, sans-serif; background-color: #f4f4f9; padding: 20px; direction: rtl; text-align: center; }
+    .container { max-width: 500px; background: white; padding: 25px; border-radius: 15px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    h3 { color: #d32f2f; margin-bottom: 10px; }
+    p { font-size: 14px; color: #666; line-height: 1.6; }
+    
+    .main-btn { background-color: #007bff; color: white; border: none; padding: 15px 25px; font-size: 18px; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%; margin: 15px 0; transition: 0.3s; }
+    .main-btn:hover { background-color: #0056b3; }
+    
+    .manual-section { background: #fff3f3; border: 1px dashed #d32f2f; padding: 15px; border-radius: 10px; margin-top: 25px; }
+    .manual-section h4 { margin: 0 0 10px 0; font-size: 15px; color: #d32f2f; }
+    
+    .copy-box { background: #eee; padding: 10px; font-size: 12px; border-radius: 5px; word-break: break-all; margin-bottom: 10px; border: 1px solid #ccc; text-align: left; direction: ltr; }
+    
+    .copy-btn { background: #6c757d; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; margin-bottom: 15px; }
+    .copy-btn:active { background: #495057; }
+    
+    .success-msg { color: #28a745; font-size: 12px; display: none; margin-top: -10px; margin-bottom: 10px; }
   </style>
 </head>
-
 <body>
-  <div class="card">
-    <h3>Take Action</h3>
-    <p>اگر دکمه اول به درستی تمام ایمیل‌ها را وارد نکرد، از دکمه‌های کپی استفاده کنید.</p>
 
-    <div class="btn-group">
-      <button class="btn-primary" onclick="openEmail()">۱. ارسال ایمیل (خودکار)</button>
-      
-      <hr style="width:100%; border:0; border-top:1px solid #eee; margin:10px 0;">
+<div class="container">
+  <h3>اقدام برای ایران</h3>
+  <p>با کلیک بر روی دکمه زیر، برنامه ایمیل شما باز شده و متن آماده برای نمایندگان S&D قرار می‌گیرد.</p>
 
-      <button class="btn-secondary" onclick="copyToClipboard(emailsList, 'status-emails')">کپی کردن لیست ایمیل‌ها</button>
-      <div id="status-emails" class="status">کپی شد! حالا در قسمت To پیست کنید.</div>
+  <button class="main-btn" onclick="tryOpenEmail()">۱. باز کردن خودکار ایمیل</button>
 
-      <button class="btn-secondary" onclick="copyToClipboard(emailBody, 'status-body')">کپی کردن متن نامه</button>
-      <div id="status-body" class="status">متن کپی شد!</div>
-    </div>
-  </div>
-
-  <script>
-    const emails = [
-      "ioannis.maniatis@europarl.europa.eu",
-      "lucia.annunziata@europarl.europa.eu",
-      "nacho.sanchezamor@europarl.europa.eu",
-      "francisco.assis@europarl.europa.eu",
-      "evin.incir@europarl.europa.eu",
-      "daniel.attard@europarl.europa.eu",
-      "alessandra.moretti@europarl.europa.eu",
-      "estelle.ceulemans@europarl.europa.eu",
-      "elio.dirupo@europarl.europa.eu"
-    ];
-
-    const subject = "Iran: Words are not enough — we urge S&D to take a firmer stance";
+  <div class="manual-section">
+    <h4>اگر دکمه بالا کار نکرد (جدا نشدند):</h4>
+    <p style="font-size: 12px;">لیست ایمیل‌ها را کپی کرده و دستی در قسمت To (گیرنده) قرار دهید:</p>
     
-    const emailBody = `Dear Members of the S&D Group,
+    <div class="copy-box" id="email-list-text"></div>
+    <button class="copy-btn" onclick="copyText('emails')">کپی لیست ایمیل‌ها</button>
+    <div id="msg-emails" class="success-msg">کپی شد!</div>
 
-As Iranian citizens and members of the Iranian diaspora, we have carefully reviewed the motions submitted on Iran. While we acknowledge your concern, we are deeply disappointed by the cautious and restrained tone adopted by the S&D Group.
+    <button class="copy-btn" onclick="copyText('body')">کپی متن نامه</button>
+    <div id="msg-body" class="success-msg">متن نامه کپی شد!</div>
+  </div>
+</div>
 
-The reality on the ground in Iran demands far more than soft language.
+<script>
+  const emails = [
+    "ioannis.maniatis@europarl.europa.eu", "lucia.annunziata@europarl.europa.eu",
+    "nacho.sanchezamor@europarl.europa.eu", "francisco.assis@europarl.europa.eu",
+    "evin.incir@europarl.europa.eu", "daniel.attard@europarl.europa.eu",
+    "alessandra.moretti@europarl.europa.eu", "estelle.ceulemans@europarl.europa.eu",
+    "elio.dirupo@europarl.europa.eu"
+  ];
 
-The Iranian regime is:
-— killing peaceful protesters
-— carrying out mass executions
-— systematically repressing women, minorities, journalists and human rights defenders
-— using hostage diplomacy and transnational repression
+  const subject = "Iran: Words are not enough — we urge S&D to take a firmer stance";
+  const bodyText = `Dear Members of the S&D Group,\n\nAs Iranian citizens and members of the Iranian diaspora, we have carefully reviewed the motions submitted on Iran. While we acknowledge your concern, we are deeply disappointed by the cautious and restrained tone adopted by the S&D Group.\n\nThe reality on the ground in Iran demands far more than soft language.\n\nThe Iranian regime is:\n— killing peaceful protesters\n— carrying out mass executions\n— systematically repressing women, minorities, journalists and human rights defenders\n— using hostage diplomacy and transnational repression\n\nOther political groups in Parliament have clearly and unequivocally:\n— named the regime as violent and illegitimate\n— called for a full IRGC terrorist designation\n— demanded an immediate halt to executions\n— supported a democratic transition led by the Iranian people\n\nWe urge the S&D Group to rise to this moral responsibility and adopt a firmer position that reflects the scale and brutality of the crimes being committed.\n\nSilence, hesitation, or diplomatic caution only embolden a regime built on terror and fear.\n\nThe people of Iran are watching. History will remember who stood firmly for human rights and who chose restraint in the face of mass repression.\n\nWe call on S&D to strengthen its position before the vote and stand unequivocally with the people of Iran.\n\nSincerely,\n[Your Name]`;
 
-Other political groups in Parliament have clearly and unequivocally:
-— named the regime as violent and illegitimate
-— called for a full IRGC terrorist designation
-— demanded an immediate halt to executions
-— supported a democratic transition led by the Iranian people
+  // نمایش لیست ایمیل‌ها در باکس کپی (با ویرگول که استاندارد جهانی است)
+  document.getElementById('email-list-text').innerText = emails.join(", ");
 
-We urge the S&D Group to rise to this moral responsibility and adopt a firmer position that reflects the scale and brutality of the crimes being committed.
+  function tryOpenEmail() {
+    // تلاش برای تشخیص هوشمند جداکننده
+    const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+    const separator = isApple ? ";" : ",";
+    const to = emails.join(separator);
 
-Silence, hesitation, or diplomatic caution only embolden a regime built on terror and fear.
+    const mailtoUrl = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+    
+    // باز کردن ایمیل
+    const link = document.createElement('a');
+    link.href = mailtoUrl;
+    link.click();
+  }
 
-The people of Iran are watching. History will remember who stood firmly for human rights and who chose restraint in the face of mass repression.
+  function copyText(type) {
+    const textToCopy = type === 'emails' ? emails.join(", ") : bodyText;
+    const msgId = type === 'emails' ? 'msg-emails' : 'msg-body';
+    
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      const msg = document.getElementById(msgId);
+      msg.style.display = "block";
+      setTimeout(() => msg.style.display = "none", 2000);
+    });
+  }
+</script>
 
-We call on S&D to strengthen its position before the vote and stand unequivocally with the people of Iran.
-
-Sincerely,
-[Your Name]`;
-
-   
-    const emailsList = emails.join(", ");
-
-    function openEmail() {
-      
-      const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
-      const separator = isApple ? ";" : ",";
-      const to = emails.join(separator);
-
-      const mailtoUrl = "mailto:" + to +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(emailBody);
-
-      window.location.href = mailtoUrl;
-    }
-
-    function copyToClipboard(text, statusId) {
-      navigator.clipboard.writeText(text).then(() => {
-        const status = document.getElementById(statusId);
-        status.style.display = "block";
-        setTimeout(() => { status.style.display = "none"; }, 3000);
-      });
-    }
-  </script>
 </body>
 </html>
